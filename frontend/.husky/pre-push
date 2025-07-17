@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+echo "🚀 EUNOMIA Pre-Push Validation"
+echo "=============================="
+
+# Get current branch
+current_branch=$(git symbolic-ref --short HEAD)
+echo "📍 Current branch: $current_branch"
+
+# Main/Master branch protection
+if [ "$current_branch" = "main" ] || [ "$current_branch" = "master" ]; then
+  echo "⚠️  WARNING: You're pushing to $current_branch!"
+  echo "🤔 Are you sure? This should usually be done via Pull Request. (y/N)"
+  read -r response
+  if [ "$response" != "y" ] && [ "$response" != "Y" ]; then
+    echo "❌ Push cancelled for safety."
+    exit 1
+  fi
+fi
+
+# Full build test
+echo "🏗️  Running full build test..."
+yarn build
+
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed! Cannot push broken code."
+  exit 1
+fi
+
+# Cleanup build artifacts (optional)
+echo "🧹 Cleaning up build artifacts..."
+rm -rf dist
+
+echo "✅ Pre-push validation complete!"
+echo "🚀 Safe to push to $current_branch"
+echo "=============================="

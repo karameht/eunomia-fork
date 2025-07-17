@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+
+echo "📝 EUNOMIA Commit Message Validation"
+echo "===================================="
+
+# Read commit message from file
+commit_msg=$(cat "$1")
+
+# Check minimum length
+if [ ${#commit_msg} -lt 10 ]; then
+  echo "❌ Commit message too short! Minimum 10 characters required."
+  echo "💡 Your message: '$commit_msg'"
+  echo "💡 Example: 'feat: add accessibility tooling'"
+  exit 1
+fi
+
+# Check conventional commits format (optional but recommended)
+if ! echo "$commit_msg" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\(.+\))?: .+"; then
+  echo "⚠️  Warning: Consider using conventional commits format:"
+  echo "💡 feat: add new feature"
+  echo "💡 fix: bug fix"
+  echo "💡 docs: documentation update"
+  echo "💡 refactor: code refactoring"
+  echo "💡 Current message: '$commit_msg'"
+  echo ""
+  echo "🤔 Continue anyway? (y/N)"
+  read -r response
+  if [ "$response" != "y" ] && [ "$response" != "Y" ]; then
+    echo "❌ Commit cancelled. Please update your commit message."
+    exit 1
+  fi
+fi
+
+echo "✅ Commit message validated!"
+echo "===================================="

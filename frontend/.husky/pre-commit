@@ -1,2 +1,32 @@
 #!/usr/bin/env sh
+
+echo "🔍 EUNOMIA Quality Gate - Pre-Commit Checks"
+echo "============================================="
+
+# Run lint-staged for changed files
+echo "📋 Running lint-staged..."
 yarn lint-staged
+
+# Check lint-staged exit code
+if [ $? -ne 0 ]; then
+  echo "❌ lint-staged failed! Fix the issues above."
+  exit 1
+fi
+
+# Additional TypeScript check
+echo "🔧 Running TypeScript check..."
+yarn tsc --noEmit
+
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript errors found! Fix them before committing."
+  exit 1
+fi
+
+# Environment file check
+echo "🌍 Checking environment files..."
+if [ ! -f ".env.local" ] && [ ! -f ".env" ]; then
+  echo "⚠️  Warning: No .env file found. Copy .env.example to .env.local"
+fi
+
+echo "✅ All pre-commit checks passed!"
+echo "============================================="
