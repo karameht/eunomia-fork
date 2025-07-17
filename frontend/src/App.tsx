@@ -1,15 +1,15 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Configuration from '@/modules/pages/Configuration';
 import Dashboard from '@/modules/pages/Dashboard';
+import { ROUTES } from '@/shared/constants/routes';
 
 export default function App() {
    return (
-      <BrowserRouter>
-         <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/configuration" element={<Configuration />} />
-         </Routes>
-      </BrowserRouter>
+      <Routes>
+         {' '}
+         <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+         <Route path={ROUTES.CONFIGURATION} element={<Configuration />} />
+      </Routes>
    );
 }

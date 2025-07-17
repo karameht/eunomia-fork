@@ -1,9 +1,9 @@
-import { Sidebar } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { appShellStyles as styles } from '@/modules/components/layout/AppShell.styles';
 import Footer from '@/modules/components/layout/Footer';
 import Header from '@/modules/components/layout/Header';
+import Sidebar from '@/modules/components/layout/Sidebar';
 
 interface AppShellProps {
    children: ReactNode;
